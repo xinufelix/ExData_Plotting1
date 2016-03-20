@@ -53,14 +53,19 @@ plot(hpc$datetime[datetime_range], hpc$Sub_metering_1[datetime_range],
      type='l')
 
 ## Overlay sub_metering_2
-points(hpc$datetime[datetime_range], hpc$Sub_metering_2[datetime_range],
-       col='red',
-       type='l')
+lines(hpc$datetime[datetime_range], hpc$Sub_metering_2[datetime_range],
+       col='red')
 
 ## Overlay sub_metering_3
-points(hpc$datetime[datetime_range], hpc$Sub_metering_3[datetime_range],
-       col='blue',
-       type='l')
+lines(hpc$datetime[datetime_range], hpc$Sub_metering_3[datetime_range],
+       col='blue')
+
+## Customize the text width to prevent truncation.
+legend("topright",
+       legend=c('Sub_metering_1', 'Sub_metering_2', 'Sub_metering_3'),
+       col=c('black', 'red', 'blue'),
+       lty=1,
+       text.width=1.8*strwidth("Sub_metering_1"))
 
 plot(hpc$datetime[datetime_range], hpc$Global_reactive_power[datetime_range],
      col='black',
@@ -68,6 +73,7 @@ plot(hpc$datetime[datetime_range], hpc$Global_reactive_power[datetime_range],
      ylab='Global_reactive_power',
      xlab='datetime',
      type='l')
+
 
 ## Create a png copy of the plot.
 dev.print(png, file = "plot4.png", width = 480, height = 480)
