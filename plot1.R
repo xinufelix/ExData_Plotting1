@@ -19,4 +19,17 @@ print(proc.time() - ptm)
 ## Combine Date, Time columns into datetime
 hpc$datetime <- as.POSIXct(paste(hpc$Date, hpc$Time), format="%d/%m/%Y %H:%M:%S")
 
+## The plot starts on Tuesday at 00:00:00 - assume local timezone.
+tuesdays <- which(weekdays(hpc$datetime) == 'Tuesday')
 
+## The range of the plot is two days at 1-minute intervals.
+two_days_min<- 60*24*2
+
+## Use the first Tuesday from the dataset as the starting point.
+hist(hpc$Global_active_power[tuesdays[1]:(tuesdays[1]+two_days_min)],
+     col='red',
+     main='Global Active Power',
+     xlab='Global Active Power (kilowatts)')
+
+## Create a png copy of the plot.
+dev.print(png, file = "plot1.png", width = 480, height = 480)
