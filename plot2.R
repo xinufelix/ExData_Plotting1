@@ -1,5 +1,5 @@
 ## What is the line number of 2007-02-01 00:00:00?
-start_datetime <- grep("^1/2/2007", readLines('./data/household_power_consumption.txt')) - 1
+start_datetime <- grep("^1/2/2007", readLines('data/household_power_consumption.txt')) - 1
 
 ## Adjust for presence of the header
 start_datetime <- start_datetime - 1
@@ -8,7 +8,7 @@ start_datetime <- start_datetime - 1
 two_days_min <- 2*24*60
 
 ## Start read from 2007-02-01 00:00:00 and include 2 days of observations.
-hpc <- read.csv("~/coursera/eda/ExData_Plotting1/data/household_power_consumption.txt",
+hpc <- read.csv("data/household_power_consumption.txt",
                 header = TRUE,
                 skip=start_datetime,
                 nrow=two_days_min,
