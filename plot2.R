@@ -14,14 +14,14 @@ hpc <- read.csv("data/household_power_consumption.txt",
                 nrow=two_days_min,
                 sep=";", 
                 colClasses = c('character',
-                             'character',
-                             'numeric',
-                             'numeric',
-                             'numeric',
-                             'numeric',
-                             'numeric',
-                             'numeric',
-                             'numeric'),
+                               'character',
+                               'numeric',
+                               'numeric',
+                               'numeric',
+                               'numeric',
+                               'numeric',
+                               'numeric',
+                               'numeric'),
                 na.strings="?",
                 stringsAsFactors=FALSE)
 
@@ -39,11 +39,13 @@ names(hpc) <- c('Date',
 ## Combine Date, Time columns into datetime
 hpc$datetime <- as.POSIXct(paste(hpc$Date, hpc$Time), format="%d/%m/%Y %H:%M:%S")
 
-## Show Frequency v. Global Active Power.
-hist(hpc$Global_active_power,
-     col='red',
-     main='Global Active Power',
-     xlab='Global Active Power (kilowatts)')
+## Plot of Global Active Power v. DateTime
+plot(hpc$datetime, hpc$Global_active_power,
+     col='black',
+     main='',
+     ylab='Global Active Power (kilowatts)',
+     xlab='',
+     type='l')
 
 ## Create a png copy of the plot.
-dev.print(png, file = "plot1.png", width = 480, height = 480)
+dev.print(png, file = "plot2.png", width = 480, height = 480)

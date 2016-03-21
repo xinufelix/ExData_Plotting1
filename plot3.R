@@ -14,14 +14,14 @@ hpc <- read.csv("data/household_power_consumption.txt",
                 nrow=two_days_min,
                 sep=";", 
                 colClasses = c('character',
-                             'character',
-                             'numeric',
-                             'numeric',
-                             'numeric',
-                             'numeric',
-                             'numeric',
-                             'numeric',
-                             'numeric'),
+                               'character',
+                               'numeric',
+                               'numeric',
+                               'numeric',
+                               'numeric',
+                               'numeric',
+                               'numeric',
+                               'numeric'),
                 na.strings="?",
                 stringsAsFactors=FALSE)
 
@@ -39,11 +39,28 @@ names(hpc) <- c('Date',
 ## Combine Date, Time columns into datetime
 hpc$datetime <- as.POSIXct(paste(hpc$Date, hpc$Time), format="%d/%m/%Y %H:%M:%S")
 
-## Show Frequency v. Global Active Power.
-hist(hpc$Global_active_power,
-     col='red',
-     main='Global Active Power',
-     xlab='Global Active Power (kilowatts)')
+## Plot of Global Active Power v. DateTime
+plot(hpc$datetime, hpc$Sub_metering_1,
+     col='black',
+     main='',
+     ylab='Energy sub metering',
+     xlab='',
+     type='l')
+
+## Overlay sub_metering_2
+lines(hpc$datetime, hpc$Sub_metering_2,
+       col='red')
+       
+## Overlay sub_metering_3
+lines(hpc$datetime, hpc$Sub_metering_3,
+       col='blue')
+
+## Customize the text width to prevent truncation.
+legend("topright",
+  legend=c('Sub_metering_1', 'Sub_metering_2', 'Sub_metering_3'),
+  col=c('black', 'red', 'blue'),
+  lty=1,
+  text.width=1.8*strwidth("Sub_metering_1"))
 
 ## Create a png copy of the plot.
-dev.print(png, file = "plot1.png", width = 480, height = 480)
+dev.print(png, file = "plot3.png", width = 480, height = 480)
