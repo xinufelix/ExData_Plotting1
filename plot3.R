@@ -1,5 +1,17 @@
-## Data are located under the 'data' subdirectory which is included with the repository.
+## What is the line number of 2007-02-01 00:00:00?
+start_datetime <- grep("^1/2/2007", readLines('./data/household_power_consumption.txt')) - 1
+
+## Adjust for presence of the header
+start_datetime <- start_datetime - 1
+
+## Number of minutes in two days
+two_days_min <- 2*24*60
+
+## Start read from 2007-02-01 00:00:00 and include 2 days of observations.
 hpc <- read.csv("~/coursera/eda/ExData_Plotting1/data/household_power_consumption.txt",
+                header = TRUE,
+                skip=start_datetime,
+                nrow=two_days_min,
                 sep=";", 
                 colClasses = c('character',
                                'character',
@@ -13,20 +25,22 @@ hpc <- read.csv("~/coursera/eda/ExData_Plotting1/data/household_power_consumptio
                 na.strings="?",
                 stringsAsFactors=FALSE)
 
-## Combine Date, Time columns into a datetime object.
+## Add the column names which were skipped during the file read.
+names(hpc) <- c('Date', 
+                'Time', 
+                'Global_active_power', 
+                'Global_reactive_power',
+                'Voltage', 
+                'Global_intensity', 
+                'Sub_metering_1', 
+                'Sub_metering_2', 
+                'Sub_metering_3')
+
+## Combine Date, Time columns into datetime
 hpc$datetime <- as.POSIXct(paste(hpc$Date, hpc$Time), format="%d/%m/%Y %H:%M:%S")
 
-## The plot starts on a Thursday, so get all of them and use the first one. 
-thursdays <- which(weekdays(hpc$datetime) == 'Thursday')
-
-## The range of interest is 48 hours which includes 2880 observations.
-two_days_min <- 2*24*60
-
-## Subset observations staring the first Thursday from the dataset as the starting point.
-datetime_range <- thursdays[1]:(thursdays[1]+two_days_min)
-
 ## Plot of Global Active Power v. DateTime
-plot(hpc$datetime[datetime_range], hpc$Sub_metering_1[datetime_range],
+plot(hpc$datetime, hpc$Sub_metering_1,
      col='black',
      main='',
      ylab='Energy sub metering',
@@ -34,14 +48,12 @@ plot(hpc$datetime[datetime_range], hpc$Sub_metering_1[datetime_range],
      type='l')
 
 ## Overlay sub_metering_2
-points(hpc$datetime[datetime_range], hpc$Sub_metering_2[datetime_range],
-       col='red',
-       type='l')
+lines(hpc$datetime, hpc$Sub_metering_2,
+       col='red')
        
 ## Overlay sub_metering_3
-points(hpc$datetime[datetime_range], hpc$Sub_metering_3[datetime_range],
-       col='blue',
-       type='l')
+lines(hpc$datetime, hpc$Sub_metering_3,
+       col='blue')
 
 ## Customize the text width to prevent truncation.
 legend("topright",
